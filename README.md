@@ -145,7 +145,15 @@ The system supports a wide range of place categories:
 - **Rated Places**: Places with user ratings and reviews
 - **Semantic Places**: Cultural sites, landmarks, and attractions
 
-## 🛠️ Development
+## 🏨 Booking Integration
+
+### Supported Platforms
+- **Booking.com** - Global hotel booking
+### Features
+- **Automatic Hotel Detection**: Identifies hotels based on place types and descriptions
+- **Smart URL Generation**: Creates optimized search queries for each platform
+- **Responsive Design**: Works seamlessly on all devices
+- **External Links**: Opens booking platforms in new tabs for convenience
 
 ### Project Structure
 ```
@@ -153,11 +161,8 @@ WanderWise/
 ├── app.py                 # Main Flask application
 ├── config.py             # Configuration and settings
 ├── requirements.txt      # Python dependencies
-├── run.py               # Startup script
 ├── templates/           # HTML templates
 │   └── index.html      # Main web interface
-├── run.bat             # Windows batch file
-└── run.sh              # Unix shell script
 ```
 
 ### Key Components
@@ -165,7 +170,6 @@ WanderWise/
 - **`app.py`**: Core Flask application with recommendation logic
 - **`config.py`**: Centralized configuration management
 - **`templates/index.html`**: Modern, responsive web interface
-- **`run.py`**: Intelligent startup script with dependency checking
 
 
 *Discover amazing places with the power of AI!*
