@@ -183,6 +183,7 @@
             padding: 20px;
             border-left: 5px solid #667eea;
             transition: all 0.3s ease;
+            position: relative;
         }
 
         .place-card:hover {
@@ -190,11 +191,24 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
 
+        .hotel-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
         .place-name {
             font-size: 1.2rem;
             font-weight: 600;
             color: #333;
             margin-bottom: 10px;
+            padding-right: 80px;
         }
 
         .place-address {
@@ -241,40 +255,49 @@
 
         .booking-section {
             margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #e9ecef;
+            padding: 15px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            border: 2px solid #28a745;
         }
 
         .booking-title {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
+            font-weight: 700;
+            color: #28a745;
+            margin-bottom: 12px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .booking-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
         }
 
         .booking-btn {
             background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             color: white;
             border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
-            display: inline-block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            text-align: center;
         }
 
         .booking-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
             color: white;
             text-decoration: none;
         }
@@ -299,6 +322,42 @@
             background: linear-gradient(135deg, #2b6cb0 0%, #4a5568 100%);
         }
 
+        .booking-btn.oyorooms {
+            background: linear-gradient(135deg, #ee2a24 0%, #d72638 100%);
+        }
+
+        .booking-btn.expedia {
+            background: linear-gradient(135deg, #ffc72c 0%, #f4b942 100%);
+            color: #333;
+        }
+
+        .booking-btn.hotels {
+            background: linear-gradient(135deg, #c41230 0%, #e91e63 100%);
+        }
+
+        .quick-booking {
+            background: linear-gradient(135deg, #6f42c1 0%, #8e44ad 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .quick-booking:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(111, 66, 193, 0.3);
+        }
+
         .error-message {
             background: #f8d7da;
             color: #721c24;
@@ -315,30 +374,69 @@
             font-size: 1.1rem;
         }
 
-        .method-tabs {
+        /* Booking Modal */
+        .booking-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
             display: flex;
-            gap: 10px;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
         }
 
-        .method-tab {
-            padding: 10px 20px;
-            border: 2px solid #e1e5e9;
-            border-radius: 25px;
-            background: white;
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2rem;
             cursor: pointer;
+            color: #999;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
             transition: all 0.3s ease;
-            font-weight: 500;
         }
 
-        .method-tab.active {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
+        .close-btn:hover {
+            background: #f8f9fa;
+            color: #333;
         }
 
-        .method-tab:hover {
-            border-color: #667eea;
+        .modal-booking-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
         }
 
         @media (max-width: 768px) {
@@ -355,6 +453,10 @@
             }
             
             .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .booking-buttons {
                 grid-template-columns: 1fr;
             }
         }
@@ -419,6 +521,19 @@
         </div>
     </div>
 
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="booking-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🏨 Book Your Stay</h2>
+                <button class="close-btn" onclick="closeBookingModal()">&times;</button>
+            </div>
+            <div id="modalBookingContent">
+                <!-- Modal content will be populated here -->
+            </div>
+        </div>
+    </div>
+
     <script>
         document.getElementById('searchForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -465,6 +580,75 @@
             }
         });
 
+        function generateBookingUrls(placeName, city) {
+            const searchQuery = encodeURIComponent(`${placeName} ${city}`);
+            const cityQuery = encodeURIComponent(city);
+            
+            return {
+                makemytrip: `https://www.makemytrip.com/hotels/hotel-listing/?checkin=&checkout=&city=${cityQuery}&country=IN&searchText=${searchQuery}`,
+                booking: `https://www.booking.com/searchresults.html?ss=${searchQuery}&lang=en`,
+                agoda: `https://www.agoda.com/search?searchText=${searchQuery}`,
+                goibibo: `https://www.goibibo.com/hotels/search/?q=${searchQuery}`,
+                trivago: `https://www.trivago.in/search?query=${searchQuery}`,
+                expedia: `https://www.expedia.co.in/Hotels-Search?destination=${searchQuery}`,
+                oyorooms: `https://www.oyorooms.com/search?location=${cityQuery}`,
+                hotels: `https://www.hotels.com/search.do?q-destination=${searchQuery}`
+            };
+        }
+
+        function openBookingModal(place, city) {
+            const modal = document.getElementById('bookingModal');
+            const modalContent = document.getElementById('modalBookingContent');
+            
+            const bookingUrls = place.booking_urls || generateBookingUrls(place.name, city);
+            
+            const bookingButtons = Object.entries(bookingUrls).map(([platform, url]) => {
+                const platformName = platform.charAt(0).toUpperCase() + platform.slice(1);
+                let icon = '🏨';
+                switch(platform) {
+                    case 'makemytrip': icon = '✈️'; break;
+                    case 'booking': icon = '🏨'; break;
+                    case 'agoda': icon = '🌟'; break;
+                    case 'goibibo': icon = '🎯'; break;
+                    case 'trivago': icon = '🔍'; break;
+                    case 'expedia': icon = '🌎'; break;
+                    case 'oyorooms': icon = '🏠'; break;
+                    case 'hotels': icon = '🏢'; break;
+                }
+                return `<a href="${url}" target="_blank" class="booking-btn ${platform}">${icon} ${platformName}</a>`;
+            }).join('');
+            
+            modalContent.innerHTML = `
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <h3 style="color: #333; margin-bottom: 10px;">${place.name}</h3>
+                    <p style="color: #666; margin-bottom: 15px;">📍 ${place.address}</p>
+                    ${place.rating ? `
+                    <div style="margin-bottom: 15px;">
+                        <span style="color: #ffc107;">★★★★★</span>
+                        <span style="font-weight: 600; margin-left: 10px;">${place.rating}/5 (${place.user_ratings_total} reviews)</span>
+                    </div>
+                    ` : ''}
+                </div>
+                <div class="modal-booking-grid">
+                    ${bookingButtons}
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
+
+        function closeBookingModal() {
+            document.getElementById('bookingModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('bookingModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
         function displayResults(data, city, placeType) {
             // Display stats
             const statsHtml = `
@@ -486,33 +670,51 @@
             // Display rated places
             if (data.rated && data.rated.length > 0) {
                 const ratedHtml = data.rated.map(place => {
+                    const isHotel = place.is_hotel || place.types.includes('lodging') || place.types.includes('hotel') || placeType.toLowerCase().includes('hotel');
+                    
                     let bookingSection = '';
-                    if (place.is_hotel && place.booking_urls) {
-                        const bookingButtons = Object.entries(place.booking_urls).map(([platform, url]) => {
+                    if (isHotel) {
+                        const bookingUrls = place.booking_urls || generateBookingUrls(place.name, city);
+                        const bookingButtons = Object.entries(bookingUrls).slice(0, 4).map(([platform, url]) => {
                             const platformName = platform.charAt(0).toUpperCase() + platform.slice(1);
-                            return `<a href="${url}" target="_blank" class="booking-btn ${platform}">${platformName}</a>`;
+                            let icon = '🏨';
+                            switch(platform) {
+                                case 'makemytrip': icon = '✈️'; break;
+                                case 'booking': icon = '🏨'; break;
+                                case 'agoda': icon = '🌟'; break;
+                                case 'goibibo': icon = '🎯'; break;
+                            }
+                            return `<a href="${url}" target="_blank" class="booking-btn ${platform}">${icon} ${platformName}</a>`;
                         }).join('');
                         
                         bookingSection = `
                             <div class="booking-section">
-                                <div class="booking-title">🏨 Book Now:</div>
+                                <div class="booking-title">
+                                    <i class="fas fa-bed"></i> Book Your Stay
+                                </div>
                                 <div class="booking-buttons">
                                     ${bookingButtons}
                                 </div>
+                                <button class="quick-booking" onclick="openBookingModal(${JSON.stringify(place).replace(/"/g, '&quot;')}, '${city}')">
+                                    <i class="fas fa-external-link-alt"></i> More Booking Options
+                                </button>
                             </div>
                         `;
                     }
                     
                     return `
                         <div class="place-card">
+                            ${isHotel ? '<div class="hotel-badge">🏨 Hotel</div>' : ''}
                             <div class="place-name">${place.name}</div>
                             <div class="place-address">📍 ${place.address}</div>
+                            ${place.rating ? `
                             <div class="place-rating">
                                 <div class="rating-stars">
                                     ${'★'.repeat(Math.floor(place.rating))}${'☆'.repeat(5 - Math.floor(place.rating))}
                                 </div>
                                 <div class="rating-text">${place.rating}/5 (${place.user_ratings_total} reviews)</div>
                             </div>
+                            ` : ''}
                             <div class="place-types">🏷️ ${place.types}</div>
                             ${bookingSection}
                         </div>
@@ -527,25 +729,41 @@
             // Display semantic places
             if (data.semantic && data.semantic.length > 0) {
                 const semanticHtml = data.semantic.map(place => {
+                    const isHotel = place.is_hotel || place.types.includes('lodging') || place.types.includes('hotel') || placeType.toLowerCase().includes('hotel');
+                    
                     let bookingSection = '';
-                    if (place.is_hotel && place.booking_urls) {
-                        const bookingButtons = Object.entries(place.booking_urls).map(([platform, url]) => {
+                    if (isHotel) {
+                        const bookingUrls = place.booking_urls || generateBookingUrls(place.name, city);
+                        const bookingButtons = Object.entries(bookingUrls).slice(0, 4).map(([platform, url]) => {
                             const platformName = platform.charAt(0).toUpperCase() + platform.slice(1);
-                            return `<a href="${url}" target="_blank" class="booking-btn ${platform}">${platformName}</a>`;
+                            let icon = '🏨';
+                            switch(platform) {
+                                case 'makemytrip': icon = '✈️'; break;
+                                case 'booking': icon = '🏨'; break;
+                                case 'agoda': icon = '🌟'; break;
+                                case 'goibibo': icon = '🎯'; break;
+                            }
+                            return `<a href="${url}" target="_blank" class="booking-btn ${platform}">${icon} ${platformName}</a>`;
                         }).join('');
                         
                         bookingSection = `
                             <div class="booking-section">
-                                <div class="booking-title">🏨 Book Now:</div>
+                                <div class="booking-title">
+                                    <i class="fas fa-bed"></i> Book Your Stay
+                                </div>
                                 <div class="booking-buttons">
                                     ${bookingButtons}
                                 </div>
+                                <button class="quick-booking" onclick="openBookingModal(${JSON.stringify(place).replace(/"/g, '&quot;')}, '${city}')">
+                                    <i class="fas fa-external-link-alt"></i> More Booking Options
+                                </button>
                             </div>
                         `;
                     }
                     
                     return `
                         <div class="place-card">
+                            ${isHotel ? '<div class="hotel-badge">🏨 Hotel</div>' : ''}
                             <div class="place-name">${place.name}</div>
                             <div class="place-address">📍 ${place.address}</div>
                             <div class="place-types">🏷️ ${place.types}</div>
@@ -590,4 +808,3 @@
     </script>
 </body>
 </html>
-

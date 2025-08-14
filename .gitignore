@@ -26,7 +26,7 @@ logs/
 # ---- Flask instance data ----
 instance/
 
-# ---- Environment / secrets ----
+---- Environment / secrets ----
 .env
 *.env
 
@@ -51,8 +51,6 @@ Thumbs.db
 .idea/
 .vscode/
 
-# ---- Frontend / Node (if present) ----
-node_modules/
 
 # ---- Large artifacts (optional: uncomment as needed) ----
 # data/
