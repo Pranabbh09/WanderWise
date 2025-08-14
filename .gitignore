@@ -1,0 +1,64 @@
+# ---- Python bytecode ----
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ---- Virtual environments ----
+venv/
+.venv/
+env/
+myenv/
+.conda/
+
+# ---- Packaging / build ----
+*.egg-info/
+.eggs/
+dist/
+build/
+pip-wheel-metadata/
+
+# ---- Logs & databases ----
+*.log
+logs/
+*.sqlite
+*.db
+
+# ---- Flask instance data ----
+instance/
+
+# ---- Environment / secrets ----
+.env
+*.env
+
+# ---- Jupyter ----
+.ipynb_checkpoints/
+.jupyter/
+
+# ---- Caches ----
+.cache/
+.pytest_cache/
+.mypy_cache/
+pytestdebug.log
+
+# ---- Coverage / reports ----
+htmlcov/
+.coverage*
+coverage.xml
+
+# ---- OS/IDE ----
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# ---- Frontend / Node (if present) ----
+node_modules/
+
+# ---- Large artifacts (optional: uncomment as needed) ----
+# data/
+# datasets/
+# models/
+# checkpoints/
+# *.pkl
+# *.h5
+# *.hdf5

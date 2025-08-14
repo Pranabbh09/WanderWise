@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌍 Smart Place Recommender</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .search-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 20px;
+            align-items: end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .form-group input, .form-group select {
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 55px;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .search-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .results-container {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            opacity: 0.9;
+        }
+
+        .results-section {
+            margin-bottom: 40px;
+        }
+
+        .results-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .places-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .place-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .place-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .place-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .place-address {
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .place-rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .rating-stars {
+            color: #ffc107;
+        }
+
+        .rating-text {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .place-types {
+            background: #e9ecef;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #495057;
+            display: inline-block;
+        }
+
+        .similarity-score {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .booking-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .booking-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .booking-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .booking-btn {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .booking-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            color: white;
+            text-decoration: none;
+        }
+
+        .booking-btn.makemytrip {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+        }
+
+        .booking-btn.booking {
+            background: linear-gradient(135deg, #003580 0%, #0071c2 100%);
+        }
+
+        .booking-btn.goibibo {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+        }
+
+        .booking-btn.agoda {
+            background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+        }
+
+        .booking-btn.trivago {
+            background: linear-gradient(135deg, #2b6cb0 0%, #4a5568 100%);
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #f5c6cb;
+            margin-top: 20px;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .method-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .method-tab {
+            padding: 10px 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 25px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .method-tab.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .method-tab:hover {
+            border-color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .search-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .places-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌍 Smart Place Recommender</h1>
+            <p>Discover amazing places using AI-powered recommendations</p>
+        </div>
+
+        <div class="search-container">
+            <form class="search-form" id="searchForm">
+                <div class="form-group">
+                    <label for="city">🏙️ City Name</label>
+                    <input type="text" id="city" name="city" placeholder="e.g., Jaipur, Mumbai, Delhi" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="placeType">📍 Place Type</label>
+                    <input type="text" id="placeType" name="placeType" placeholder="e.g., hotel, restaurant, temple" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="method">🔍 Method</label>
+                    <select id="method" name="method">
+                        <option value="rating">⭐ Rating-based (Default)</option>
+                        <option value="semantic">🧠 Semantic Search</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="search-btn" id="searchBtn">
+                    <i class="fas fa-search"></i> Find Places
+                </button>
+            </form>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>🔍 Searching for amazing places...</p>
+        </div>
+
+        <div class="results-container" id="resultsContainer">
+            <div class="stats" id="stats">
+                <!-- Stats will be populated here -->
+            </div>
+
+            <div class="results-section" id="ratedSection">
+                <h2><i class="fas fa-star"></i> Top Rated Places</h2>
+                <div class="places-grid" id="ratedPlaces">
+                    <!-- Rated places will be populated here -->
+                </div>
+            </div>
+
+            <div class="results-section" id="semanticSection">
+                <h2><i class="fas fa-brain"></i> Semantic Matches</h2>
+                <div class="places-grid" id="semanticPlaces">
+                    <!-- Semantic places will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const city = document.getElementById('city').value.trim();
+            const placeType = document.getElementById('placeType').value.trim();
+            const method = document.getElementById('method').value;
+            
+            if (!city || !placeType) {
+                alert('Please fill in both city and place type fields.');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('resultsContainer').style.display = 'none';
+            document.getElementById('searchBtn').disabled = true;
+            
+            try {
+                const response = await fetch('/api/recommend', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        city: city,
+                        place_type: placeType,
+                        method: method
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayResults(result.data, city, placeType);
+                } else {
+                    showError(result.error);
+                }
+            } catch (error) {
+                showError('An error occurred while fetching recommendations. Please try again.');
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('searchBtn').disabled = false;
+            }
+        });
+
+        function displayResults(data, city, placeType) {
+            // Display stats
+            const statsHtml = `
+                <div class="stat-card">
+                    <h3>${data.stats.total_places}</h3>
+                    <p>Total Places Found</p>
+                </div>
+                <div class="stat-card">
+                    <h3>${data.stats.rated_places}</h3>
+                    <p>Rated Places</p>
+                </div>
+                <div class="stat-card">
+                    <h3>${data.stats.semantic_places}</h3>
+                    <p>Semantic Places</p>
+                </div>
+            `;
+            document.getElementById('stats').innerHTML = statsHtml;
+
+            // Display rated places
+            if (data.rated && data.rated.length > 0) {
+                const ratedHtml = data.rated.map(place => {
+                    let bookingSection = '';
+                    if (place.is_hotel && place.booking_urls) {
+                        const bookingButtons = Object.entries(place.booking_urls).map(([platform, url]) => {
+                            const platformName = platform.charAt(0).toUpperCase() + platform.slice(1);
+                            return `<a href="${url}" target="_blank" class="booking-btn ${platform}">${platformName}</a>`;
+                        }).join('');
+                        
+                        bookingSection = `
+                            <div class="booking-section">
+                                <div class="booking-title">🏨 Book Now:</div>
+                                <div class="booking-buttons">
+                                    ${bookingButtons}
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    return `
+                        <div class="place-card">
+                            <div class="place-name">${place.name}</div>
+                            <div class="place-address">📍 ${place.address}</div>
+                            <div class="place-rating">
+                                <div class="rating-stars">
+                                    ${'★'.repeat(Math.floor(place.rating))}${'☆'.repeat(5 - Math.floor(place.rating))}
+                                </div>
+                                <div class="rating-text">${place.rating}/5 (${place.user_ratings_total} reviews)</div>
+                            </div>
+                            <div class="place-types">🏷️ ${place.types}</div>
+                            ${bookingSection}
+                        </div>
+                    `;
+                }).join('');
+                document.getElementById('ratedPlaces').innerHTML = ratedHtml;
+                document.getElementById('ratedSection').style.display = 'block';
+            } else {
+                document.getElementById('ratedSection').style.display = 'none';
+            }
+
+            // Display semantic places
+            if (data.semantic && data.semantic.length > 0) {
+                const semanticHtml = data.semantic.map(place => {
+                    let bookingSection = '';
+                    if (place.is_hotel && place.booking_urls) {
+                        const bookingButtons = Object.entries(place.booking_urls).map(([platform, url]) => {
+                            const platformName = platform.charAt(0).toUpperCase() + platform.slice(1);
+                            return `<a href="${url}" target="_blank" class="booking-btn ${platform}">${platformName}</a>`;
+                        }).join('');
+                        
+                        bookingSection = `
+                            <div class="booking-section">
+                                <div class="booking-title">🏨 Book Now:</div>
+                                <div class="booking-buttons">
+                                    ${bookingButtons}
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    return `
+                        <div class="place-card">
+                            <div class="place-name">${place.name}</div>
+                            <div class="place-address">📍 ${place.address}</div>
+                            <div class="place-types">🏷️ ${place.types}</div>
+                            <div class="similarity-score">Similarity: ${(place.similarity * 100).toFixed(1)}%</div>
+                            ${bookingSection}
+                        </div>
+                    `;
+                }).join('');
+                document.getElementById('semanticPlaces').innerHTML = semanticHtml;
+                document.getElementById('semanticSection').style.display = 'block';
+            } else {
+                document.getElementById('semanticSection').style.display = 'none';
+            }
+
+            // Show results
+            document.getElementById('resultsContainer').style.display = 'block';
+        }
+
+        function showError(message) {
+            const errorHtml = `
+                <div class="error-message">
+                    <i class="fas fa-exclamation-triangle"></i> ${message}
+                </div>
+            `;
+            document.getElementById('resultsContainer').innerHTML = errorHtml;
+            document.getElementById('resultsContainer').style.display = 'block';
+        }
+
+        // Add some interactivity to method selection
+        document.getElementById('method').addEventListener('change', function() {
+            const method = this.value;
+            const placeTypeInput = document.getElementById('placeType');
+            
+            if (method === 'semantic') {
+                placeTypeInput.placeholder = 'e.g., historical, cultural, spiritual';
+            } else if (method === 'rating') {
+                placeTypeInput.placeholder = 'e.g., hotel, restaurant, cafe';
+            } else {
+                placeTypeInput.placeholder = 'e.g., hotel, restaurant, temple';
+            }
+        });
+    </script>
+</body>
+</html>
+

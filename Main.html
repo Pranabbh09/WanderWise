@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>MakeMyTrip Redirect</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: 40px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+    }
+    button {
+      background: #2196F3;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    button:hover {
+      background: #0b7dda;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Search Hotels on MakeMyTrip</h2>
+
+  <label>Destination</label>
+  <select id="destination">
+    <option value="CTJAI">Jaipur</option>
+    <option value="CTDEL">Delhi</option>
+    <option value="CTBOM">Mumbai</option>
+  </select>
+
+  <label>Check-in Date</label>
+  <input type="date" id="checkin">
+
+  <label>Check-out Date</label>
+  <input type="date" id="checkout">
+
+  <label>Guests (Format: 2e0e = 2 adults)</label>
+  <input type="text" id="guests" value="2e0e">
+
+  <button onclick="searchHotels()">View Hotels</button>
+
+  <script>
+    function searchHotels() {
+      const destination = document.getElementById('destination').value;
+      const checkin = document.getElementById('checkin').value;
+      const checkout = document.getElementById('checkout').value;
+      const guests = document.getElementById('guests').value;
+
+      if (!checkin || !checkout) {
+        alert("Please select both check-in and check-out dates.");
+        return;
+      }
+
+      const url = `https://www.makemytrip.com/hotels/hotel-listing/?checkin=${checkin}&checkout=${checkout}&city=${destination}&country=IN&roomStayQualifier=${guests}&locusId=${destination}&locusType=city`;
+
+      window.open(url, "_blank");
+    }
+  </script>
+
+</body>
+</html>
