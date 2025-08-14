@@ -2,7 +2,6 @@
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
 [![Flask](https://img.shields.io/badge/Flask-3.1.1-green.svg)](https://flask.palletsprojects.com/)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 **WanderWise** is an intelligent place recommendation system that combines the power of Google Places API with AI-driven semantic search to provide personalized place suggestions in any city. Whether you're looking for restaurants, tourist attractions, or hidden gems, WanderWise uses advanced natural language processing to understand your preferences and deliver relevant recommendations.
 
