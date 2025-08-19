@@ -5,4 +5,4 @@ numpy
 sentence-transformers
 transformers
 scikit-learn
-
+streamlit
