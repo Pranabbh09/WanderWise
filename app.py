@@ -115,6 +115,7 @@ def generate_embeddings_for_semantic(df):
     semantic_df = df[df['category'] == 'semantic'].copy()
     
     if not semantic_df.empty:
+        # Store embeddings as tensors for computation, but we'll remove this column before returning
         semantic_df['embedding'] = semantic_df['description'].apply(
             lambda x: embedder.encode(x, convert_to_tensor=True)
         )
@@ -133,7 +134,12 @@ def recommend_semantic_places(df, user_query, top_k=5):
         lambda x: util.cos_sim(query_vec, x).item()
     )
     
-    return semantic_df.sort_values(by='similarity', ascending=False).head(top_k)
+    # Remove the embedding column before returning (it's not needed for the frontend)
+    result_df = semantic_df.sort_values(by='similarity', ascending=False).head(top_k)
+    if not result_df.empty:
+        result_df = result_df.drop(columns=['embedding'])
+    
+    return result_df
 
 @app.route('/')
 def home():
@@ -233,4 +239,3 @@ if __name__ == '__main__':
             print(f"   {issue}")
     
     app.run(debug=FLASK_DEBUG, host=FLASK_HOST, port=FLASK_PORT)
-
